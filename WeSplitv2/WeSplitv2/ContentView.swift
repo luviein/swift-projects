@@ -12,7 +12,6 @@ struct ContentView: View {
     @State private var numPeople = 0
     @State private var tipPercentage = 20
     @FocusState private var focusAmount : Bool
-    @State private var showBreakdown : Bool = false
     let tips = [9, 0]
     
     var totalPerPerson : Double {
