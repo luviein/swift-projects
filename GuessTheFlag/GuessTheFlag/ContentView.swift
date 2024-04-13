@@ -12,6 +12,9 @@ struct ContentView: View {
     @State private var showScore = false
     @State private var scoreTitle = ""
     @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Spain", "UK", "Ukraine", "US"].shuffled()
+    @State private var userScore = 0
+//    @State private var tappedCountry = ""
+    @State private var count = 0
     @State private var correctAnswer = Int.random(in: 0...2)
     var body: some View {
         ZStack{
@@ -35,6 +38,7 @@ struct ContentView: View {
                         number in
                         Button{
                             flagTapped(number)
+//                            tappedCountry = countries[number]
                         } label: {
                             Image(countries[number])
                                 .clipShape(.capsule)
@@ -51,7 +55,7 @@ struct ContentView: View {
                 Spacer()
                 Spacer()
                 
-                Text("Score: ???")
+                Text("Score: \(userScore)")
                     .foregroundStyle(.white)
                     .font(.title.bold())
                 
@@ -63,14 +67,25 @@ struct ContentView: View {
         .alert(scoreTitle, isPresented: $showScore){
             Button("Continue", action: askQuestion)
         } message: {
-            Text("Your score is ???")
+            Text("Your score is \(userScore)")
         }
+       
     }
     func flagTapped(_ number : Int) {
+        
         if number == correctAnswer {
             scoreTitle = "Correct"
+            userScore += 1
+            count += 1
         } else {
-            scoreTitle = "Wrong"
+            scoreTitle = "Wrong, thats the state of \(countries[number])"
+            count += 1
+           
+            if (userScore > 0) {
+                userScore -= 1
+                
+            }
+            
         }
         showScore = true
     }
@@ -78,7 +93,15 @@ struct ContentView: View {
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
     }
+    
+    func restart() {
+        countries.shuffle()
+        correctAnswer = Int.random(in: 0...2)
+        count = 0
+        userScore = 0
+    }
 }
+    
 
 #Preview {
     ContentView()
